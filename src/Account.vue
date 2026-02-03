@@ -6,78 +6,38 @@
         qnta.cl
       </div>
     </div>
-    <div class="bg-neutral-950/50 border border-neutral-800 p-5 rounded-xl flex flex-col gap-5">
+    <div class="dark:bg-neutral-950/50 border dark:border-neutral-800 p-5 rounded-xl flex flex-col gap-5 bg-neutral-50 border-neutral-100 shadow-lg dark:shadow-none" v-if="!account_not_found">
       <div class="font-bold">
         {{ account ? account.name : 'Cargando...' }} - {{ account ? account.slug : 'Cargando...' }}
       </div>
       <div class="flex flex-col gap-4">
-        <div class="flex gap-2 items-center">
-          <div>
-            {{ account ? account.name : 'Cargando...' }}
-          </div>
-          <div class="ml-auto text-xs bg-neutral-800 px-2 py-1 rounded-full" @click="copyText(account.name)">
-            copiar
-          </div>
-        </div>
-        <div class="flex gap-2">
-          <div>
-            {{ account ? account.rut : 'Cargando...' }}
-          </div>
-          <div class="ml-auto text-xs bg-neutral-800 px-2 py-1 rounded-full" @click="copyText(account.rut)">
-            copiar
-          </div>
-        </div>
-        <div class="flex gap-2 items-center">
-          <div>
-            {{account ? BANKS.find(bank => bank.value === account.bank)?.label : 'Cargando...'}}
-          </div>
-          <div class="ml-auto text-xs bg-neutral-800 px-2 py-1 rounded-full" @click="copyText(account.bank)">
-            copiar
-          </div>
-        </div>
-        <div class="flex gap-2 items-center">
-          <div>
-            {{account ? ACCOUNT_TYPES.find(type => type.value === account.type)?.label : 'Cargando...'}}
-          </div>
-          <div class="ml-auto text-xs bg-neutral-800 px-2 py-1 rounded-full" @click="copyText(account.type)">
-            copiar
-          </div>
-        </div>
-        <div class="flex gap-2 items-center">
-          <div class="italic">
-            Cuenta
-          </div>
-          <div>
-            {{ account ? account.number : 'Cargando...' }}
-          </div>
-          <div class="ml-auto text-xs bg-neutral-800 px-2 py-1 rounded-full" @click="copyText(account.number)">
-            copiar
-          </div>
-        </div>
-        <div class="flex gap-2 items-center">
-          <div>
-            {{ account ? account.email : 'Cargando...' }}
-          </div>
-          <div class="ml-auto text-xs bg-neutral-800 px-2 py-1 rounded-full" @click="copyText(account.email)">
-            copiar
-          </div>
-        </div>
-        
+        <AccountField :value="account?.name" />
+        <AccountField :value="account?.rut" />
+        <AccountField :value="account ? BANKS.find(bank => bank.value === account.bank)?.label : ''" />
+        <AccountField :value="account ? ACCOUNT_TYPES.find(type => type.value === account.type)?.label : ''" />
+        <AccountField prefix="Cuenta" :value="account?.number" />
+        <AccountField :value="account?.email" />        
       </div>
-      <div class="border border-neutral-50 font-medium text-sm bg-neutral-950/50 rounded-lg p-2 text-center" @click="copyAll">
-        Copiar todos los datos
+      <div :class="`border  font-medium text-sm ${copied? 'dark:border-neutral-950 dark:bg-neutral-50 dark:text-black bg-black text-white' : 'dark:border-neutral-50 dark:bg-neutral-950/50 dark:text-white'} transition-all duration-500 rounded-lg p-2 text-center`" @click="copyAll">
+        {{copied ? 'Copiado!' : 'Copiar todos los datos' }}
       </div>
     </div>
-    <div class="bg-neutral-950 p-3 rounded text-neutral-300 text-center text-sm flex flex-col gap-3">
+    <div class="dark:bg-neutral-950 bg-neutral-50 border-neutral-100 shadow dark:shadow-none text-black p-3 rounded-xl dark:text-neutral-300 text-center text-sm flex flex-col gap-3" v-if="!account_not_found">
       <RouterLink to="/" class="font-bold underline cursor-pointer">
         Registrate aqui
       </RouterLink>
       te equivocaste? registrate de nuevo con el mismo rut
     </div>
+    <div class="dark:bg-neutral-950 bg-neutral-100 p-3 rounded text-neutral-300 text-center text-sm flex flex-col gap-3" v-if="account_not_found">
+      Esta cuenta aun no existe. qnta.cl/{{accountName}} puede ser tu link
+      <RouterLink to="/" class="font-bold underline cursor-pointer">
+        Registrate aqui
+      </RouterLink>
+    </div>
     <div class="px-5 py-3 gap-5 text-sm">
       Inspirado fuertemente en num.cl <br>
       Hecho por un ser de carne y hueso 🍖.
-      Revisa el codigo en <a href="github.com/vicholp/qnta">GitHub</a>.
+      Revisa el codigo en <a href="https://github.com/vicholp/qnta">GitHub</a>.
     </div>
   </div>
 </template>
@@ -85,6 +45,7 @@
 
 import { BANKS, ACCOUNT_TYPES } from './consts.js';
 import { getAccount } from './api.js';
+import AccountField from './AccountField.vue';
 
 export default {
   name: "App",
@@ -94,25 +55,36 @@ export default {
       accountName: this.$route.params.accountName,
       BANKS,
       ACCOUNT_TYPES,
+      account_not_found: false,
+      copied: false,
     };
   },
+  components: {
+    AccountField,
+  },
   methods: {
-    copyText(text) {
-      navigator.clipboard.writeText(text);
-    },
     copyAll() {
       const allData = `${this.account.name}
-      ${this.account.rut}
-      ${this.BANKS.find(bank => bank.value === this.account.bank)?.label}
-      ${this.ACCOUNT_TYPES.find(type => type.value === this.account.type)?.label}
-      ${this.account.number}
-      ${this.account.email}`;
-      navigator.clipboard.writeText(allData);
+${this.account.rut}
+${this.BANKS.find(bank => bank.value === this.account.bank)?.label}
+${this.ACCOUNT_TYPES.find(type => type.value === this.account.type)?.label}
+${this.account.number}
+${this.account.email}`;
+      navigator.clipboard.writeText(allData).then(() => {
+        this.copied = true;
+        setTimeout(() => {
+          this.copied = false;
+        }, 2000);
+      });
     },
   },
   mounted() {
     getAccount(this.accountName).then((data) => {
       this.account = data.data;
+    }).catch((error) => {
+      if (error.response && error.response.status === 404) {
+        this.account_not_found = true;
+      }
     });
   },
 };
