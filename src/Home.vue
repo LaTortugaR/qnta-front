@@ -18,7 +18,7 @@
             </div>
             <div class="w-2/3 flex">
               <div class="border rounded px-2 py-1 dark:border-neutral-800 border-neutral-300 flex w-full h-10">
-                <input type="text" class="focus-visible:outline-none" placeholder="Alexis Sanchez" v-model="account.name">
+                <input type="text" class="focus-visible:outline-none w-full" placeholder="Alexis Sanchez" v-model="account.name">
               </div>
             </div>
           </div>
@@ -30,7 +30,7 @@
             </div>
             <div class="w-2/3 flex">
               <div class="border rounded px-2 py-1 dark:border-neutral-800 border-neutral-300 flex w-full h-10">
-                <input type="text" class="focus-visible:outline-none" placeholder="12345678-9" v-model="account.rut">
+                <input type="text" class="focus-visible:outline-none w-full" placeholder="12345678-9" v-model="account.rut">
               </div>
             </div>
           </div>
@@ -72,7 +72,7 @@
             </div>
             <div class="w-2/3 flex">
               <div class="border rounded px-2 py-1 dark:border-neutral-800 border-neutral-300 flex w-full h-10">
-                <input type="text" class="focus-visible:outline-none" placeholder="0-0000-1234-5" v-model="account.number">
+                <input type="text" class="focus-visible:outline-none w-full" placeholder="0-0000-1234-5" v-model="account.number">
               </div>
             </div>
           </div>
@@ -84,7 +84,7 @@
             </div>
             <div class="w-2/3 flex">
               <div class="border rounded px-2 py-1 dark:border-neutral-800 border-neutral-300 flex w-full h-10">
-                <input type="text" class="focus-visible:outline-none" placeholder="correo@ejemplo.com" v-model="account.email">
+                <input type="text" class="focus-visible:outline-none w-full" placeholder="correo@ejemplo.com" v-model="account.email">
               </div>
             </div>
           </div>
@@ -96,7 +96,7 @@
             </div>
             <div class="w-2/3 flex">
               <div class="border rounded px-2 py-1 dark:border-neutral-800 border-neutral-300 flex w-full h-10 items-center">
-                <div class="italic">qnta.cl/</div><input type="text" class="focus-visible:outline-none" placeholder="cabrochico" v-model="account.slug">
+                <div class="italic">qnta.cl/</div><input type="text" class="focus-visible:outline-none w-full" placeholder="cabrochico" v-model="account.slug">
               </div>
             </div>
           </div>
