@@ -10,6 +10,7 @@ export const BANKS = [
     { value: 'banco-security', label: 'Banco Security' },
     { value: 'banco-internacional', label: 'Banco Internacional' },
     { value: 'banco-falabella', label: 'Banco Falabella' },
+    { value: 'coopeuch', label: 'Coopeuch' },
 ]
 
 export const ACCOUNT_TYPES = [
