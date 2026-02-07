@@ -1,12 +1,13 @@
 <template>
   <div class="p-5 max-w-xl mx-auto flex flex-col gap-10">
-    <div class="flex justify-center">
+    
+    <div class="glass-card dark:bg-neutral-950/50 border dark:border-neutral-800 p-5 rounded-xl flex flex-col gap-5 bg-neutral-50 border-neutral-100 shadow-lg dark:shadow-none" v-if="!account_not_found">
+      <div class="flex justify-center">
       <div
         class="text-center text-4xl font-light bg-clip-text text-transparent bg-linear-to-r w-min from-blue-600 to-purple-500">
         qnta.cl
       </div>
     </div>
-    <div class="glass-card dark:bg-neutral-950/50 border dark:border-neutral-800 p-5 rounded-xl flex flex-col gap-5 bg-neutral-50 border-neutral-100 shadow-lg dark:shadow-none" v-if="!account_not_found">
       <div class="font-bold">
         {{ account ? account.name : 'Cargando...' }} - {{ account ? account.slug : 'Cargando...' }}
       </div>
